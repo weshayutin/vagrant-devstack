@@ -32,6 +32,10 @@ node /^devstack/ {
 	package { 'git':
 		ensure 		=> 'present',
 	}
+	#ensure  is installed
+	package { 'sudo':
+		ensure 		=> 'present',
+	}
 
 	# clone the devstack repo
 	vcsrepo { "/home/vagrant/devstack":
@@ -55,9 +59,12 @@ APACHE_USER=vagrant
 API_RATE_LIMIT=False
 HOST_IP=10.1.2.44
 FLOATING_RANGE=10.1.2.224/27
+#CUSTOMIZATIONS
 DATA_DIR=$HOME/LOGS
 LOGFILE=$DATA_DIR/logs/stack.log
-SCREEN_LOGDIR=$DATA_DIR/logs
+SCREEN_LOGDIR=$DATA_DIR/screen_logs
+API_RATE_LIMIT=False
+#END_CUSTOMIZATIONS
 IMAGE_URLS+='http://uec-images.ubuntu.com/precise/current/precise-server-cloudimg-amd64-disk1.img'"
 
     file { "/home/vagrant/devstack/localrc":
