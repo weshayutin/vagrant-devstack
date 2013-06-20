@@ -1,42 +1,60 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+dhostname = "devstackfedora18grizzly.local"
 
-# Copyright 2013 Zürcher Hochschule für Angewandte Wissenschaften
-# All Rights Reserved.
-#
-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
-#    not use this file except in compliance with the License. You may obtain
-#    a copy of the License at
-#
-#         http://www.apache.org/licenses/LICENSE-2.0
-#
-#    Unless required by applicable law or agreed to in writing, software
-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-#    License for the specific language governing permissions and limitations
-#    under the License.
+Vagrant.configure("2") do |config|
+  config.vm.box = "f18-base-box"
+  devstack_config.vm.box_url = "http://file.rdu.redhat.com/~whayutin/f18-base-box/package.box"
 
-dhostname = "devstackwes2.local"
+  # devstack_config.vm.boot_mode = :gui
 
-Vagrant::Config.run do |config|
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  config.vm.network :private_network, ip: "10.1.2.3"
 
-  config.vm.define :devstackwes2 do |devstack_config|
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  config.vm.network :public_network
 
-    devstack_config.vm.box = "precise64"
-    devstack_config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
 
-    # devstack_config.vm.boot_mode = :gui
-    devstack_config.vm.network  :hostonly, "10.1.2.2" #:hostonly or :bridged - default is NAT
-    devstack_config.vm.host_name = dhostname
-    devstack_config.vm.customize ["modifyvm", :id, "--memory", 3024]
-    devstack_config.ssh.max_tries = 100
-
-    devstack_config.vm.provision :puppet do |devstack_puppet|
-      devstack_puppet.pp_path = "/tmp/vagrant-puppet"
-      devstack_puppet.module_path = "modules"
-      devstack_puppet.manifests_path = "manifests"
-      devstack_puppet.manifest_file = "site.pp"
-      devstack_puppet.facter = { "fqdn" => dhostname }
-    end
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  config.vm.provider :virtualbox do |vb|
+     # Don't boot with headless mode
+  #   vb.gui = true
+  #
+  #   # Use VBoxManage to customize the VM. For example to change memory:
+     vb.customize ["modifyvm", :id, "--memory", "3024"]
   end
+  
+  # An example Puppet manifest to provision the message of the day:
+  #
+  # # group { "puppet":
+  # #   ensure => "present",
+  # # }
+  # #
+  # # File { owner => 0, group => 0, mode => 0644 }
+  # #
+  # # file { '/etc/motd':
+  # #   content => "Welcome to your Vagrant-built virtual machine!
+  # #               Managed by Puppet.\n"
+  # # }
+  #
+  config.vm.provision :puppet do |devstack_puppet|
+    devstack_puppet.pp_path = "/tmp/vagrant-puppet"
+    devstack_puppet.module_path = "modules"
+    devstack_puppet.manifests_path = "manifests"
+    devstack_puppet.manifest_file = "site.pp"
+    devstack_puppet.facter = { "fqdn" => dhostname }
+
+  end
+
 end

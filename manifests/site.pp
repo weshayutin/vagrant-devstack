@@ -13,7 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-node /^devstackwes2/ {
+node /^devstackfedora18grizzly/ {
 
 
 	#set if you want to ######
@@ -46,14 +46,17 @@ node /^devstackwes2/ {
 # , http://fedorapeople.org/groups/heat/prebuilt-jeos-images/F16-x86_64-cfntools.qcow2,http://fedorapeople.org/groups/heat/prebuilt-jeos-images/F16-i386-cfntools.qcow2'"
 # ENABLED_SERVICES+=,heat,h-api,h-api-cfn,h-api-cw,h-eng
 	$localrc_cnt = "
+disable_service rabbit
+enable_service qpid
+disable_service mysql
+enable_service postgresql
 ADMIN_PASSWORD=admin
-MYSQL_PASSWORD=admin
-RABBIT_PASSWORD=admin
 SERVICE_PASSWORD=admin
 SERVICE_TOKEN=admin
+DATABASE_PASSWORD=admin
 APACHE_USER=vagrant
 API_RATE_LIMIT=False
-HOST_IP=10.1.2.2
+HOST_IP=10.1.2.3
 FLOATING_RANGE=10.1.2.224/27
 #CUSTOMIZATIONS
 LOGFILE=/home/vagrant/logs/stack.log
