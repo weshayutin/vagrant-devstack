@@ -4,7 +4,7 @@ dhostname = "devstackfedora18grizzly.local"
 
 Vagrant.configure("2") do |config|
   config.vm.box = "f18-base-box"
-  devstack_config.vm.box_url = "http://file.rdu.redhat.com/~whayutin/f18-base-box/package.box"
+  config.vm.box_url = "http://file.rdu.redhat.com/~whayutin/f18-base-box/package.box"
 
   # devstack_config.vm.boot_mode = :gui
 
