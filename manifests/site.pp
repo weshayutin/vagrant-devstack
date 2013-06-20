@@ -13,7 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-node /^devstack/ {
+node /^devstackwes2/ {
 
 
 	#set if you want to ######
@@ -30,10 +30,6 @@ node /^devstack/ {
 
 	#ensure git is installed
 	package { 'git':
-		ensure 		=> 'present',
-	}
-	#ensure  is installed
-	package { 'sudo':
 		ensure 		=> 'present',
 	}
 
@@ -57,12 +53,11 @@ SERVICE_PASSWORD=admin
 SERVICE_TOKEN=admin
 APACHE_USER=vagrant
 API_RATE_LIMIT=False
-HOST_IP=10.1.2.44
+HOST_IP=10.1.2.2
 FLOATING_RANGE=10.1.2.224/27
 #CUSTOMIZATIONS
-DATA_DIR=$HOME/LOGS
-LOGFILE=$DATA_DIR/logs/stack.log
-SCREEN_LOGDIR=$DATA_DIR/screen_logs
+LOGFILE=/home/vagrant/logs/stack.log
+SCREEN_LOGDIR=/home/vagrant/logs/screen_logs
 API_RATE_LIMIT=False
 #END_CUSTOMIZATIONS
 IMAGE_URLS+='http://uec-images.ubuntu.com/precise/current/precise-server-cloudimg-amd64-disk1.img'"

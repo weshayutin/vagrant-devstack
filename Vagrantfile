@@ -16,17 +16,17 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-dhostname = "devstack.local"
+dhostname = "devstackwes2.local"
 
 Vagrant::Config.run do |config|
 
-  config.vm.define :devstack do |devstack_config|
+  config.vm.define :devstackwes2 do |devstack_config|
 
     devstack_config.vm.box = "precise64"
     devstack_config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
     # devstack_config.vm.boot_mode = :gui
-    devstack_config.vm.network  :hostonly, "10.1.2.44" #:hostonly or :bridged - default is NAT
+    devstack_config.vm.network  :hostonly, "10.1.2.2" #:hostonly or :bridged - default is NAT
     devstack_config.vm.host_name = dhostname
     devstack_config.vm.customize ["modifyvm", :id, "--memory", 3024]
     devstack_config.ssh.max_tries = 100
