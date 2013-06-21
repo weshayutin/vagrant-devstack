@@ -59,9 +59,21 @@ API_RATE_LIMIT=False
 HOST_IP=10.1.2.3
 FLOATING_RANGE=10.1.2.224/27
 #CUSTOMIZATIONS
-LOGFILE=/home/vagrant/logs/stack.log
-SCREEN_LOGDIR=/home/vagrant/logs/screen_logs
+LOGFILE=/tmp/DEVSTACK/logs/stack.log
+SCREEN_LOGDIR=/tmp/DEVSTACK/logs/screen_logs
 API_RATE_LIMIT=False
+# Compute Service
+NOVA_BRANCH=stable/grizzly
+# # Volume Service
+CINDER_BRANCH=stable/grizzly
+# # Image Service
+GLANCE_BRANCH=stable/grizzly
+# # Web UI (Dashboard)
+HORIZON_BRANCH=stable/grizzly
+# # Auth Services
+KEYSTONE_BRANCH=stable/grizzly
+# # Quantum (Network) service
+QUANTUM_BRANCH=stable/grizzly
 #END_CUSTOMIZATIONS
 IMAGE_URLS+='http://uec-images.ubuntu.com/precise/current/precise-server-cloudimg-amd64-disk1.img'"
 
@@ -75,8 +87,8 @@ IMAGE_URLS+='http://uec-images.ubuntu.com/precise/current/precise-server-cloudim
 	#run stack.sh as current user (vagrant)
 	exec { "/home/vagrant/devstack/stack.sh":
 		cwd     	=> "/home/vagrant/devstack",
-		group		=> "vagrant",
-		user		=> "vagrant",
+		group		=> "root",
+		user		=> "root",
 		logoutput	=> on_failure,
 		timeout		=> 0, # stack.sh takes time!
 		require 	=> File["/home/vagrant/devstack/localrc"],
